@@ -24,21 +24,29 @@
     </EditText>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonUp"
+        android:layout_alignBottom="@+id/buttonUp"
+        android:layout_alignParentRight="true"
+        android:text="▼" />
+
+    <Button
+        android:id="@+id/buttonUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textCount"
-        android:layout_alignTop="@id/textCount"
         android:layout_below="@+id/textCount"
         android:text="▲" />
 
     <Button
-        android:id="@+id/Button01"
+        android:id="@+id/buttonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
         android:layout_alignParentRight="true"
-        android:text="▼" />
+        android:layout_below="@+id/buttonUp"
+        android:layout_toRightOf="@+id/buttonUp"
+        android:text="Reset" />
 
 </RelativeLayout>
