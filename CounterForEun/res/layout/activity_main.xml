@@ -16,6 +16,7 @@
         android:ems="1000"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:gravity="center_vertical|center_horizontal"
         android:inputType="numberSigned"
         android:text="0"
         android:textSize="@dimen/textSizeCounter" >
@@ -40,13 +41,34 @@
         android:layout_below="@+id/textCount"
         android:text="▲" />
 
+    <EditText
+        android:id="@+id/textDescription"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttonDown"
+        android:layout_marginTop="51dp"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="Write anything"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
+        android:selectAllOnFocus="false" />
+
     <Button
-        android:id="@+id/buttonReset"
+        android:id="@+id/buttonResetMemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonUp"
-        android:layout_toRightOf="@+id/buttonUp"
-        android:text="Reset" />
+        android:text="Reset Memo" />
+
+    <Button
+        android:id="@+id/buttonResetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/buttonResetMemo"
+        android:text="Reset Count" />
 
 </RelativeLayout>
