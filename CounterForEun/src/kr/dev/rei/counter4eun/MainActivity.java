@@ -1,20 +1,27 @@
 package kr.dev.rei.counter4eun;
 
 import java.text.DecimalFormat;
+
 import java.util.Calendar;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener, OnFocusChangeListener {
+	private RelativeLayout layoutMain;
+	
 	private Button buttonUp;
 	private Button buttonDown;
 	private Button buttonResetCount;
@@ -35,6 +42,7 @@ public class MainActivity extends Activity implements OnClickListener, OnFocusCh
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		layoutMain = (RelativeLayout) findViewById(R.id.layoutMain);
 		textCount = (EditText) findViewById(R.id.textCount);
 		textDescription = (EditText) findViewById(R.id.textDescription);
 		textDateTime = (TextView) findViewById(R.id.textDateTime);
@@ -43,6 +51,7 @@ public class MainActivity extends Activity implements OnClickListener, OnFocusCh
 		buttonResetCount = (Button) findViewById(R.id.buttonResetCount);
 		buttonResetMemo = (Button) findViewById(R.id.buttonResetMemo);
 		
+		layoutMain.setOnClickListener(this);
 		textDescription.setOnFocusChangeListener(this);
 		buttonUp.setOnClickListener(this);
 		buttonDown.setOnClickListener(this);
@@ -88,14 +97,9 @@ public class MainActivity extends Activity implements OnClickListener, OnFocusCh
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	@Override
 	public void onClick(View v) {
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromWindow(textDescription.getWindowToken(), 0);
 		
 		if (v.equals(buttonUp))
 		{
@@ -171,44 +175,77 @@ public class MainActivity extends Activity implements OnClickListener, OnFocusCh
 		}
 		else if (v.equals(buttonResetCount))
 		{
-			textCount.setText("0");
+			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle(getString(R.string.app_name));
+			dialog.setMessage(getString(R.string.reset_count_answer));
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					textCount.setText("0");
 
-			Calendar now = Calendar.getInstance();
-			int year = now.get(Calendar.YEAR);
-			int month = now.get(Calendar.MONTH) + 1;
-			int date = now.get(Calendar.DATE);
-			int hour = now.get(Calendar.HOUR_OF_DAY);
-			int minute = now.get(Calendar.MINUTE);
-			int second = now.get(Calendar.SECOND);
-			StringBuffer sb = new StringBuffer(df0000.format(year));
-			sb.append(".");
-			sb.append(df00.format(month));
-			sb.append(".");
-			sb.append(df00.format(date));
-			sb.append(" ");
-			sb.append(df00.format(hour));
-			sb.append(":");
-			sb.append(df00.format(minute));
-			sb.append(":");
-			sb.append(df00.format(second));
-			textDateTime.setText(sb.toString());
-			
-			sharedPrefEditor.putInt("CountingValue", 0);
+					Calendar now = Calendar.getInstance();
+					int year = now.get(Calendar.YEAR);
+					int month = now.get(Calendar.MONTH) + 1;
+					int date = now.get(Calendar.DATE);
+					int hour = now.get(Calendar.HOUR_OF_DAY);
+					int minute = now.get(Calendar.MINUTE);
+					int second = now.get(Calendar.SECOND);
+					StringBuffer sb = new StringBuffer(df0000.format(year));
+					sb.append(".");
+					sb.append(df00.format(month));
+					sb.append(".");
+					sb.append(df00.format(date));
+					sb.append(" ");
+					sb.append(df00.format(hour));
+					sb.append(":");
+					sb.append(df00.format(minute));
+					sb.append(":");
+					sb.append(df00.format(second));
+					textDateTime.setText(sb.toString());
+					
+					sharedPrefEditor.putInt("CountingValue", 0);
 
-			sharedPrefEditor.putInt("CountingYear", year);
-			sharedPrefEditor.putInt("CountingMonth", month);
-			sharedPrefEditor.putInt("CountingDate", date);
-			sharedPrefEditor.putInt("CountingHour", hour);
-			sharedPrefEditor.putInt("CountingMinute", minute);
-			sharedPrefEditor.putInt("CountingSecond", second);
+					sharedPrefEditor.putInt("CountingYear", year);
+					sharedPrefEditor.putInt("CountingMonth", month);
+					sharedPrefEditor.putInt("CountingDate", date);
+					sharedPrefEditor.putInt("CountingHour", hour);
+					sharedPrefEditor.putInt("CountingMinute", minute);
+					sharedPrefEditor.putInt("CountingSecond", second);
+					
+					sharedPrefEditor.commit();
+				}
+			});
+			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}
+			});
 			
-			sharedPrefEditor.commit();
+			dialog.show();
 		}
 		else if (v.equals(buttonResetMemo))
 		{
-			textDescription.setText("");
-			sharedPrefEditor.putString("Description", "");
-			sharedPrefEditor.commit();	
+			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle(getString(R.string.app_name));
+			dialog.setMessage(getString(R.string.reset_memo_answer));
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm)
+					, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							textDescription.setText("");
+							sharedPrefEditor.putString("Description", "");
+							sharedPrefEditor.commit();
+						}
+					});
+			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+				}
+			});
+			
+			dialog.show();
 		}
 	}
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Counter</string>
+    <string name="app_name">손뜨개 도우미</string>
     <string name="menu_settings">Settings</string>
+    <string name="reset_count_answer">카운트를 초기화 하시겠습니까?</string>
+    <string name="reset_memo_answer">메모를 초기화 하시겠습니까?</string>
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
 
 </resources>
