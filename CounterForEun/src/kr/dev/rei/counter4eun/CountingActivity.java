@@ -1,6 +1,5 @@
 package kr.dev.rei.counter4eun;
 
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -8,6 +7,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class CountingActivity extends Activity implements OnClickListener, OnFocusChangeListener {
+	public static final String paramKeyIdNum = "KEY_ID_NUM";
+
 	private RelativeLayout layoutMain;
 
 	private Button buttonUp;
@@ -34,8 +37,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 
-	private final DecimalFormat df00 = new DecimalFormat("00");
-	private final DecimalFormat df0000 = new DecimalFormat("0000");
+	private CountingData data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,37 +64,60 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		sharedPref = getSharedPreferences("CounterForEun", Activity.MODE_PRIVATE);
 		sharedPrefEditor = sharedPref.edit();
 
-		int countingValue = sharedPref.getInt("CountingValue", 0);
-		textCount.setText(String.valueOf(countingValue));
+		initCountingData();
 
-		String descStr = sharedPref.getString("Description", "");
-		textDescription.setText(descStr);
+		textCount.setText(String.valueOf(data.getCount()));
+		textDescription.setText(data.getDescription());
+		try {
+			textDateTime.setText(UsefulTools.GetInstance().getDateTimeStringType02ToType01(data.getCountTime()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-		int year = sharedPref.getInt("CountingYear", 2013);
-		int month = sharedPref.getInt("CountingMonth", 1);
-		int date = sharedPref.getInt("CountingDate", 1);
-		int hour = sharedPref.getInt("CountingHour", 0);
-		int minute = sharedPref.getInt("CountingMinute", 0);
-		int second = sharedPref.getInt("CountingSecond", 0);
-		StringBuffer sb = new StringBuffer(df0000.format(year));
-		sb.append(".");
-		sb.append(df00.format(month));
-		sb.append(".");
-		sb.append(df00.format(date));
-		sb.append(" ");
-		sb.append(df00.format(hour));
-		sb.append(":");
-		sb.append(df00.format(minute));
-		sb.append(":");
-		sb.append(df00.format(second));
-		textDateTime.setText(sb.toString());
+	private void initCountingData() {
+		int idNum = getIntent().getIntExtra(CountingActivity.paramKeyIdNum, 1);
+
+		UsefulTools tools = UsefulTools.GetInstance();
+		UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
+		SQLiteDatabase db = dbAdater.getReadableDatabase();
+
+		String name = "default";
+		String description = "";
+		String descriptionTime = "20130101000000";
+		int count = 0;
+		String countTime = "20130101000000";
+		int sortNum = 1;
+
+		String selectSQL = dbAdater.getSelectCounterDataSQL(idNum);
+		Cursor dbCursor = db.rawQuery(selectSQL, null);
+		if (dbCursor.moveToFirst())
+		{
+			idNum = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnIdNum));
+			name = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnName));
+			description = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescription));
+			descriptionTime = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescriptionDatetime));
+			count = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnCountNum));
+			countTime = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnCountDatetime));
+			sortNum = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnSortNum));
+		}
+		dbCursor.close();
+		dbAdater.close();
+
+		data = new CountingData(idNum, name, description, descriptionTime, count, countTime, sortNum);
 	}
 
 	@Override
 	protected void onPause() {
+		UsefulTools tools = UsefulTools.GetInstance();
+
 		String descStr = textDescription.getText().toString();
-		sharedPrefEditor.putString("Description", descStr);
-		sharedPrefEditor.commit();
+		data.setDescription(descStr);
+
+		String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+		data.setDescriptionTime(nowString);
+
+		updateCountingData();
 
 		super.onPause();
 	}
@@ -102,77 +127,41 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(textDescription.getWindowToken(), 0);
 
+		final UsefulTools tools = UsefulTools.GetInstance();
+
 		if (v.equals(buttonUp))
 		{
-			int countingValue = sharedPref.getInt("CountingValue", 0);
+			int countingValue = data.getCount();
 			textCount.setText(String.valueOf(++countingValue));
 
-			Calendar now = Calendar.getInstance();
-			int year = now.get(Calendar.YEAR);
-			int month = now.get(Calendar.MONTH) + 1;
-			int date = now.get(Calendar.DATE);
-			int hour = now.get(Calendar.HOUR_OF_DAY);
-			int minute = now.get(Calendar.MINUTE);
-			int second = now.get(Calendar.SECOND);
-			StringBuffer sb = new StringBuffer(df0000.format(year));
-			sb.append(".");
-			sb.append(df00.format(month));
-			sb.append(".");
-			sb.append(df00.format(date));
-			sb.append(" ");
-			sb.append(df00.format(hour));
-			sb.append(":");
-			sb.append(df00.format(minute));
-			sb.append(":");
-			sb.append(df00.format(second));
-			textDateTime.setText(sb.toString());
+			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			try {
+				textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-			sharedPrefEditor.putInt("CountingValue", countingValue);
+			data.setCount(countingValue);
+			data.setCountTime(nowString);
 
-			sharedPrefEditor.putInt("CountingYear", year);
-			sharedPrefEditor.putInt("CountingMonth", month);
-			sharedPrefEditor.putInt("CountingDate", date);
-			sharedPrefEditor.putInt("CountingHour", hour);
-			sharedPrefEditor.putInt("CountingMinute", minute);
-			sharedPrefEditor.putInt("CountingSecond", second);
-
-			sharedPrefEditor.commit();
+			updateCountingData();
 		}
 		else if (v.equals(buttonDown))
 		{
-			int countingValue = sharedPref.getInt("CountingValue", 0);
+			int countingValue = data.getCount();
 			textCount.setText(String.valueOf(--countingValue));
 
-			Calendar now = Calendar.getInstance();
-			int year = now.get(Calendar.YEAR);
-			int month = now.get(Calendar.MONTH) + 1;
-			int date = now.get(Calendar.DATE);
-			int hour = now.get(Calendar.HOUR_OF_DAY);
-			int minute = now.get(Calendar.MINUTE);
-			int second = now.get(Calendar.SECOND);
-			StringBuffer sb = new StringBuffer(df0000.format(year));
-			sb.append(".");
-			sb.append(df00.format(month));
-			sb.append(".");
-			sb.append(df00.format(date));
-			sb.append(" ");
-			sb.append(df00.format(hour));
-			sb.append(":");
-			sb.append(df00.format(minute));
-			sb.append(":");
-			sb.append(df00.format(second));
-			textDateTime.setText(sb.toString());
+			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			try {
+				textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-			sharedPrefEditor.putInt("CountingValue", countingValue);
+			data.setCount(countingValue);
+			data.setCountTime(nowString);
 
-			sharedPrefEditor.putInt("CountingYear", year);
-			sharedPrefEditor.putInt("CountingMonth", month);
-			sharedPrefEditor.putInt("CountingDate", date);
-			sharedPrefEditor.putInt("CountingHour", hour);
-			sharedPrefEditor.putInt("CountingMinute", minute);
-			sharedPrefEditor.putInt("CountingSecond", second);
-
-			sharedPrefEditor.commit();
+			updateCountingData();
 		}
 		else if (v.equals(buttonResetCount))
 		{
@@ -183,37 +172,17 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					textCount.setText("0");
+					String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+					try {
+						textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
-					Calendar now = Calendar.getInstance();
-					int year = now.get(Calendar.YEAR);
-					int month = now.get(Calendar.MONTH) + 1;
-					int date = now.get(Calendar.DATE);
-					int hour = now.get(Calendar.HOUR_OF_DAY);
-					int minute = now.get(Calendar.MINUTE);
-					int second = now.get(Calendar.SECOND);
-					StringBuffer sb = new StringBuffer(df0000.format(year));
-					sb.append(".");
-					sb.append(df00.format(month));
-					sb.append(".");
-					sb.append(df00.format(date));
-					sb.append(" ");
-					sb.append(df00.format(hour));
-					sb.append(":");
-					sb.append(df00.format(minute));
-					sb.append(":");
-					sb.append(df00.format(second));
-					textDateTime.setText(sb.toString());
+					data.setCount(0);
+					data.setCountTime(nowString);
 
-					sharedPrefEditor.putInt("CountingValue", 0);
-
-					sharedPrefEditor.putInt("CountingYear", year);
-					sharedPrefEditor.putInt("CountingMonth", month);
-					sharedPrefEditor.putInt("CountingDate", date);
-					sharedPrefEditor.putInt("CountingHour", hour);
-					sharedPrefEditor.putInt("CountingMinute", minute);
-					sharedPrefEditor.putInt("CountingSecond", second);
-
-					sharedPrefEditor.commit();
+					updateCountingData();
 				}
 			});
 			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -235,8 +204,12 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					textDescription.setText("");
-					sharedPrefEditor.putString("Description", "");
-					sharedPrefEditor.commit();
+					data.setDescription("");
+
+					String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+					data.setDescriptionTime(nowString);
+
+					updateCountingData();
 				}
 			});
 			dialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -254,10 +227,32 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (v.equals(textDescription))
 		{
+			UsefulTools tools = UsefulTools.GetInstance();
+
 			String descStr = textDescription.getText().toString();
-			sharedPrefEditor.putString("Description", descStr);
-			sharedPrefEditor.commit();
+			data.setDescription(descStr);
+
+			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			data.setDescriptionTime(nowString);
+
+			updateCountingData();
 		}
 	}
 
+	private void updateCountingData() {
+		UsefulTools tools = UsefulTools.GetInstance();
+		UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
+
+		String updateSQL = dbAdater.getUpdateCounterDataSQL(data.getIdNum(),
+				data.getName(),
+				data.getDescription(),
+				data.getDescriptionTime(),
+				data.getCount(),
+				data.getCountTime(),
+				data.getSortNum());
+
+		SQLiteDatabase db = dbAdater.getWritableDatabase();
+		db.execSQL(updateSQL);
+		db.close();
+	}
 }

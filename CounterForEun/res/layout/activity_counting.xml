@@ -80,6 +80,7 @@
         android:layout_below="@id/textCount"
         android:gravity="center_vertical|center_horizontal"
         android:text="2013.01.01 00:00:00"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/text_grey" />
 
 </RelativeLayout>

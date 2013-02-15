@@ -118,7 +118,7 @@ public class UsefulTools {
 
 	public void setDBVersion(SharedPreferences.Editor sharedPrefEditor, int version)
 	{
-		sharedPrefEditor.putInt(preferenceKeyVersion, version);
+		sharedPrefEditor.putInt(preferenceKeyDBVersion, version);
 		sharedPrefEditor.commit();
 	}
 
@@ -223,7 +223,7 @@ public class UsefulTools {
 			updateSQL.append(columnCountNum).append(" = ").append(countNum).append(", ");
 			updateSQL.append(columnCountDatetime).append(" = '").append(countDateTime).append("', ");
 			updateSQL.append(columnSortNum).append(" = ").append(sortNum);
-			updateSQL.append("WHERE ").append(columnIdNum).append(" = ").append(idNum);
+			updateSQL.append(" WHERE ").append(columnIdNum).append(" = ").append(idNum);
 
 			return updateSQL.toString();
 		}

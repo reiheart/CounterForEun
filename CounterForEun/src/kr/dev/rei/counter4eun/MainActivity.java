@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,7 +23,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements Runnable, AdapterView.OnItemSelectedListener{
+public class MainActivity extends Activity implements Runnable, AdapterView.OnItemClickListener{
 	private RelativeLayout layoutTitle;
 
 	private ListView listCounting;
@@ -36,6 +37,7 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		System.out.println("onCreate");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -57,6 +59,12 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		titleHandler = new TitleHandler();
 		Thread finishThread = new Thread(this);
 		finishThread.start();
+	}
+
+	@Override
+	protected void onResume() {
+		System.out.println("onResume");
+		super.onResume();
 	}
 
 	private void initCountingList() {
@@ -102,13 +110,13 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		listCounting.setAdapter(listAdapterCounting);
 
 		listCounting.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		listCounting.setOnItemSelectedListener(this);
+		listCounting.setOnItemClickListener(this);
 	}
 
 	private void getCountingData() {
 		if (listCountingData == null)
 		{
-			listCountingData = new ArrayList<MainActivity.CountingData>();
+			listCountingData = new ArrayList<CountingData>();
 		}
 		else
 		{
@@ -117,9 +125,9 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 		UsefulTools tools = UsefulTools.GetInstance();
 		UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
-		SQLiteDatabase db = dbAdater.getReadableDatabase();
-
 		String selectSQL = dbAdater.getSelectCounterDataSQL();
+
+		SQLiteDatabase db = dbAdater.getReadableDatabase();
 		Cursor dbCursor = db.rawQuery(selectSQL, null);
 		if (dbCursor.moveToFirst())
 		{
@@ -135,12 +143,14 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 				listCountingData.add(new CountingData(idNum, name, description, descriptionDateTime, countNum, countDateTime, sortNum));
 			}while (dbCursor.moveToNext());
 		}
+		dbCursor.close();
 		dbAdater.close();
 	}
 
 	private void versioning() {
 		UsefulTools tools = UsefulTools.GetInstance();
 		float version = tools.getVersion(sharedPref);
+
 		if (version == 0.0f)
 		{
 			DecimalFormat df00 = new DecimalFormat("00");
@@ -161,18 +171,20 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 			countingTime.append(df00.format(minute));
 			countingTime.append(df00.format(second));
 
+			UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
+			String insertSQL = dbAdater.getInsertCounterDataSQL("default",
+					descStr,
+					tools.getDateTimeStringType02(Calendar.getInstance()),
+					countingValue,
+					countingTime.toString(),
+					1);
+
+			SQLiteDatabase db = dbAdater.getWritableDatabase();
+			db.execSQL(insertSQL);
+			dbAdater.close();
+
 			if (!countingTime.toString().equals("20130101000000"))
 			{
-				UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
-				SQLiteDatabase db = dbAdater.getWritableDatabase();
-				db.execSQL(dbAdater.getInsertCounterDataSQL("default",
-						descStr,
-						tools.getDateTimeStringType01(Calendar.getInstance()),
-						countingValue,
-						countingTime.toString(),
-						1));
-				dbAdater.close();
-
 				sharedPrefEditor.remove("CountingValue");
 				sharedPrefEditor.remove("Description");
 				sharedPrefEditor.remove("CountingYear");
@@ -193,16 +205,12 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		CountingData data = listCountingData.get(position);
 
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
-
+		Intent countingIntent = new Intent(this, CountingActivity.class);
+		countingIntent.putExtra(CountingActivity.paramKeyIdNum, data.getIdNum());
+		startActivity(countingIntent);
 	}
 
 	@Override
@@ -223,76 +231,9 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 			layoutTitle.setVisibility(View.INVISIBLE);
 
 			super.handleMessage(msg);
+
+			System.out.println("handleMessage");
 		}
 	}
 
-	private class CountingData {
-		private int idNum;
-		private String name;
-		private String description;
-		private String descriptionTime;
-		private int count;
-		private String countTime;
-		private int sortNum;
-
-		public CountingData()
-		{
-		}
-
-		public CountingData(int idNum, String name, String description,
-				String descriptionTime, int count, String countTime,
-				int sortNum) {
-			super();
-			this.idNum = idNum;
-			this.name = name;
-			this.description = description;
-			this.descriptionTime = descriptionTime;
-			this.count = count;
-			this.countTime = countTime;
-			this.sortNum = sortNum;
-		}
-
-		public int getIdNum() {
-			return idNum;
-		}
-		public void setIdNum(int idNum) {
-			this.idNum = idNum;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getDescription() {
-			return description;
-		}
-		public void setDescription(String description) {
-			this.description = description;
-		}
-		public String getDescriptionTime() {
-			return descriptionTime;
-		}
-		public void setDescriptionTime(String descriptionTime) {
-			this.descriptionTime = descriptionTime;
-		}
-		public int getCount() {
-			return count;
-		}
-		public void setCount(int count) {
-			this.count = count;
-		}
-		public String getCountTime() {
-			return countTime;
-		}
-		public void setCountTime(String countTime) {
-			this.countTime = countTime;
-		}
-		public int getSortNum() {
-			return sortNum;
-		}
-		public void setSortNum(int sortNum) {
-			this.sortNum = sortNum;
-		}
-	}
 }
