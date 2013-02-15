@@ -3,6 +3,7 @@ package kr.dev.rei.counter4eun;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 	private SharedPreferences.Editor sharedPrefEditor;
 
 	private TitleHandler titleHandler;
+	private boolean titleShown;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,8 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		this.versioning();
 
 		this.initCountingList();
-
-		listCounting.setVisibility(View.INVISIBLE);
-		layoutTitle.setVisibility(View.VISIBLE);
-
+		
+		titleShown = false;
 		titleHandler = new TitleHandler();
 		Thread finishThread = new Thread(this);
 		finishThread.start();
@@ -63,8 +63,26 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 	@Override
 	protected void onResume() {
-		System.out.println("onResume");
 		super.onResume();
+
+		this.getCountingData();
+		listAdapterCounting.clear();
+		Iterator<CountingData> iterator = listCountingData.iterator();
+		while (iterator.hasNext())
+		{
+			listAdapterCounting.add(iterator.next());
+		}
+
+		if (titleShown)
+		{
+			listCounting.setVisibility(View.VISIBLE);
+			layoutTitle.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			listCounting.setVisibility(View.INVISIBLE);
+			layoutTitle.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void initCountingList() {
@@ -77,7 +95,7 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 		this.getCountingData();
 
-		listAdapterCounting = new ArrayAdapter<CountingData>(this, R.layout.listviewitem_counting, listCountingData){
+		listAdapterCounting = new ArrayAdapter<CountingData>(this, R.layout.listviewitem_counting){
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				View listItemView = convertView;
@@ -216,12 +234,13 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		titleHandler.sendMessage(new Message());
+		titleShown = true;
 	}
 
 	private class TitleHandler extends Handler {
