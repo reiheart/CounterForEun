@@ -6,80 +6,42 @@
     android:background="@drawable/bg_witch"
     tools:context=".MainActivity" >
 
-    <EditText
-        android:id="@+id/textCount"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:clickable="false"
-        android:ems="1000"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:gravity="center_vertical|center_horizontal"
-        android:inputType="numberSigned"
-        android:text="0"
-        android:textSize="@dimen/textSizeCounter" />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" >
 
-    <Button
-        android:id="@+id/buttonDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonUp"
-        android:layout_alignBottom="@+id/buttonUp"
-        android:layout_alignRight="@+id/textCount"
-        android:text="▼" />
+        <ImageView
+            android:id="@+id/imgTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/bg_title" />
 
-    <EditText
-        android:id="@+id/textDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="130dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textCount"
-        android:ems="10"
-        android:gravity="top|left"
-        android:hint="Write anything"
-        android:inputType="textMultiLine"
-        android:scrollHorizontally="false"
-        android:selectAllOnFocus="false" >
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="손뜨개 도우미 시작중..."
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_grey" />
+    </RelativeLayout>
 
-        <requestFocus />
-    </EditText>
+    <ListView
+        android:id="@+id/listCounting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/buttonResetCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Reset Count" />
+    </ListView>
+    
+    
 
-    <Button
-        android:id="@+id/buttonResetMemo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/buttonResetCount"
-        android:text="Reset Memo" />
-
-    <Button
-        android:id="@+id/buttonUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textDescription"
-        android:layout_alignParentLeft="true"
-        android:text="▲" />
-
-    <TextView
-        android:id="@+id/textDateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/buttonDown"
-        android:layout_below="@id/textCount"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="2013.01.01 00:00:00"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
+    
 </RelativeLayout>

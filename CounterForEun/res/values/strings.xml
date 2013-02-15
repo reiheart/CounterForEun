@@ -7,5 +7,7 @@
     <string name="reset_memo_answer">메모를 초기화 하시겠습니까?</string>
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
+    <string name="title_activity_title">TitleActivity</string>
+    <string name="empty_counting_list">count를 추가하세요.</string>
 
 </resources>
