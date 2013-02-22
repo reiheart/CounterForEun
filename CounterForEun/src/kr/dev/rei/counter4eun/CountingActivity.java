@@ -42,7 +42,8 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getApplication().setTheme(R.style.AppTheme);
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_counting);
 
 		layoutMain = (RelativeLayout) findViewById(R.id.layoutMain);
@@ -66,6 +67,8 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 
 		initCountingData();
 
+		setTitle(data.getName());
+
 		textCount.setText(String.valueOf(data.getCount()));
 		textDescription.setText(data.getDescription());
 		try {
@@ -74,6 +77,14 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		getApplication().setTheme(R.style.theme_no_Title);
+		super.onDestroy();
+	}
+
+
 
 	private void initCountingData() {
 		int idNum = getIntent().getIntExtra(CountingActivity.paramKeyIdNum, 1);
