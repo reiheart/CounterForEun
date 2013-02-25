@@ -17,17 +17,18 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements Runnable, AdapterView.OnItemClickListener{
 	private RelativeLayout layoutTitle;
-
+	private LinearLayout layoutSubMain;
 	private ListView listCounting;
+
 	private ArrayAdapter<CountingData> listAdapterCounting;
 	private ArrayList<CountingData> listCountingData;
 
@@ -39,13 +40,12 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		System.out.println("onCreate");
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.activity_main);
 
 		layoutTitle = (RelativeLayout) findViewById(R.id.layoutTitle);
+		layoutSubMain = (LinearLayout) findViewById(R.id.layoutSubMain);
 		listCounting = (ListView) findViewById(R.id.listCounting);
 
 		sharedPref = getSharedPreferences("CounterForEun", Activity.MODE_PRIVATE);
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		this.versioning();
 
 		this.initCountingList();
-		
+
 		titleShown = false;
 		titleHandler = new TitleHandler();
 		Thread finishThread = new Thread(this);
@@ -75,12 +75,12 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 		if (titleShown)
 		{
-			listCounting.setVisibility(View.VISIBLE);
+			layoutSubMain.setVisibility(View.VISIBLE);
 			layoutTitle.setVisibility(View.INVISIBLE);
 		}
 		else
 		{
-			listCounting.setVisibility(View.INVISIBLE);
+			layoutSubMain.setVisibility(View.INVISIBLE);
 			layoutTitle.setVisibility(View.VISIBLE);
 		}
 	}
@@ -246,12 +246,10 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 	private class TitleHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
-			listCounting.setVisibility(View.VISIBLE);
+			layoutSubMain.setVisibility(View.VISIBLE);
 			layoutTitle.setVisibility(View.INVISIBLE);
 
 			super.handleMessage(msg);
-
-			System.out.println("handleMessage");
 		}
 	}
 

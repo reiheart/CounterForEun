@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +23,8 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	public static final String paramKeyIdNum = "KEY_ID_NUM";
 
 	private RelativeLayout layoutMain;
+
+	private EditText textName;
 
 	private Button buttonUp;
 	private Button buttonDown;
@@ -42,10 +43,9 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getApplication().setTheme(R.style.AppTheme);
-		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_counting);
 
+		textName = (EditText) findViewById(R.id.textName);
 		layoutMain = (RelativeLayout) findViewById(R.id.layoutMain);
 		textCount = (EditText) findViewById(R.id.textCount);
 		textDescription = (EditText) findViewById(R.id.textDescription);
@@ -56,6 +56,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		buttonResetMemo = (Button) findViewById(R.id.buttonResetMemo);
 
 		layoutMain.setOnClickListener(this);
+		textName.setOnFocusChangeListener(this);
 		textDescription.setOnFocusChangeListener(this);
 		buttonUp.setOnClickListener(this);
 		buttonDown.setOnClickListener(this);
@@ -67,8 +68,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 
 		initCountingData();
 
-		setTitle(data.getName());
-
+		textName.setText(data.getName());
 		textCount.setText(String.valueOf(data.getCount()));
 		textDescription.setText(data.getDescription());
 		try {
@@ -80,7 +80,6 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 
 	@Override
 	protected void onDestroy() {
-		getApplication().setTheme(R.style.theme_no_Title);
 		super.onDestroy();
 	}
 
@@ -121,6 +120,9 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	@Override
 	protected void onPause() {
 		UsefulTools tools = UsefulTools.GetInstance();
+
+		String name = textName.getText().toString();
+		data.setName(name);
 
 		String descStr = textDescription.getText().toString();
 		data.setDescription(descStr);
@@ -236,6 +238,13 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
+		if (v.equals(textName))
+		{
+			String name = textName.getText().toString();
+			data.setName(name);
+
+			updateCountingData();
+		}
 		if (v.equals(textDescription))
 		{
 			UsefulTools tools = UsefulTools.GetInstance();

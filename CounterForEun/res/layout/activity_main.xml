@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/bg_title" />
+            android:src="@drawable/bg_title"
+            android:contentDescription="@string/cont_desc_image" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -29,19 +30,43 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp"
-            android:text="손뜨개 도우미 시작중..."
+            android:text="@string/notice_start"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/text_grey" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listCounting"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/layoutSubMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-    </ListView>
-    
-    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="right|center_vertical" >
 
+            <Button
+                android:id="@+id/buttonAdd"
+                android:layout_width="45dp"
+                android:layout_height="38dp"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/buttonRemove"
+                android:layout_width="45dp"
+                android:layout_height="38dp"
+                android:text="-" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listCounting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+
+    </LinearLayout>
     
 </RelativeLayout>

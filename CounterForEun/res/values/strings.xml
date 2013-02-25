@@ -9,5 +9,14 @@
     <string name="cancel">취소</string>
     <string name="title_activity_title">TitleActivity</string>
     <string name="empty_counting_list">count를 추가하세요.</string>
-
+    <string name="hint_description">Write anything</string>
+    <string name="text_reset_count_button">Reset Count</string>
+    <string name="text_reset_desc_button">Reset Memo</string>
+    <string name="text_up_button">▲</string>
+    <string name="text_down_button">▼</string>
+    <string name="default_text_name">Name</string>
+    <string name="default_text_datetime">2013.01.01 00:00:00</string>
+    <string name="default_text_count">0</string>
+    <string name="notice_start">손뜨개 도우미 시작중...</string>
+    <string name="cont_desc_image">starting image</string>
 </resources>

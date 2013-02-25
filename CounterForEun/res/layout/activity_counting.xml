@@ -6,7 +6,7 @@
     android:background="@drawable/bg_witch"
     tools:context=".MainActivity" >
 
-    <EditText
+   <EditText
         android:id="@+id/textDescription"
         android:layout_width="wrap_content"
         android:layout_height="130dp"
@@ -16,13 +16,8 @@
         android:layout_toRightOf="@+id/textCount"
         android:ems="10"
         android:gravity="top|left"
-        android:hint="Write anything"
-        android:inputType="textMultiLine"
-        android:scrollbarStyle="insideInset"
-        android:scrollbars="horizontal|vertical" >
-
-        <requestFocus />
-    </EditText>
+        android:hint="@string/hint_description"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/buttonResetCount"
@@ -30,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Reset Count" />
+        android:text="@string/text_reset_count_button" />
 
     <Button
         android:id="@+id/buttonResetMemo"
@@ -38,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/buttonResetCount"
-        android:text="Reset Memo" />
+        android:text="@string/text_reset_desc_button" />
 
     <Button
         android:id="@+id/buttonDown"
@@ -47,9 +42,9 @@
         android:layout_alignBottom="@+id/buttonUp"
         android:layout_alignRight="@+id/textCount"
         android:layout_alignTop="@+id/buttonUp"
-        android:text="▼" />
+        android:text="@string/text_down_button" />
 
-    <TextView
+    <EditText
         android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -58,9 +53,9 @@
         android:layout_toLeftOf="@+id/textDescription"
         android:background="@color/color_half_tran_black"
         android:gravity="center_vertical|center_horizontal"
-        android:text="Name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/text_grey" />
+        android:textColor="@color/text_grey"
+        android:text="@string/default_text_name"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/buttonUp"
@@ -68,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDescription"
-        android:text="▲" />
+        android:text="@string/text_up_button" />
 
     <TextView
         android:id="@+id/textDateTime"
@@ -79,7 +74,7 @@
         android:layout_alignRight="@+id/textCount"
         android:layout_toLeftOf="@+id/textDescription"
         android:gravity="center_vertical|center_horizontal"
-        android:text="2013.01.01 00:00:00"
+        android:text="@string/default_text_datetime"
         android:textColor="@color/text_grey" />
 
     <EditText
@@ -94,7 +89,7 @@
         android:focusableInTouchMode="false"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="numberSigned"
-        android:text="0"
+        android:text="@string/default_text_count"
         android:textSize="@dimen/textSizeCounter" />
 
 </RelativeLayout>
