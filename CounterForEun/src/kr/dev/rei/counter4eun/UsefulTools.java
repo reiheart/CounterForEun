@@ -37,6 +37,11 @@ public class UsefulTools {
 	}
 
 	public String getDateTimeStringType01(Calendar dateTime) {
+		if (dateTime == null)
+		{
+			dateTime = Calendar.getInstance();
+		}
+
 		StringBuffer dateTimeString = new StringBuffer();
 		dateTimeString.append(df0000.format(dateTime.get(Calendar.YEAR))).append(".");
 		dateTimeString.append(df00.format(dateTime.get(Calendar.MONTH) + 1)).append(".");
@@ -49,6 +54,11 @@ public class UsefulTools {
 	}
 
 	public String getDateTimeStringType02(Calendar dateTime) {
+		if (dateTime == null)
+		{
+			dateTime = Calendar.getInstance();
+		}
+
 		StringBuffer dateTimeString = new StringBuffer();
 		dateTimeString.append(df0000.format(dateTime.get(Calendar.YEAR)));
 		dateTimeString.append(df00.format(dateTime.get(Calendar.MONTH) + 1));
@@ -246,7 +256,15 @@ public class UsefulTools {
 		public String getSelectCounterDataSQL(int idNum, String name)
 		{
 			StringBuffer selectSQL = new StringBuffer();
-			selectSQL.append("SELECT ").append(columnIdNum).append(", ");
+			selectSQL.append("SELECT ");
+			if (idNum == 0)
+			{
+				selectSQL.append("MAX(").append(columnIdNum).append(") AS ").append(columnIdNum).append(", ");
+			}
+			else
+			{
+				selectSQL.append(columnIdNum).append(", ");
+			}
 			selectSQL.append(columnName).append(", ");
 			selectSQL.append(columnDescription).append(", ");
 			selectSQL.append(columnDescriptionDatetime).append(", ");

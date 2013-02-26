@@ -11,6 +11,13 @@ public class CountingData {
 
 	public CountingData()
 	{
+		idNum = -1;
+		name = "no name";
+		description = "";
+		descriptionTime = "20130101000000";
+		count = 0;
+		countTime = "20130101000000";
+		sortNum = 1;
 	}
 
 	public CountingData(int idNum, String name, String description,

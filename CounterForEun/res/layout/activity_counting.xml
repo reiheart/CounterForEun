@@ -57,21 +57,13 @@
         android:text="@string/default_text_name"
         android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/buttonUp"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textDescription"
-        android:text="@string/text_up_button" />
-
     <TextView
         android:id="@+id/textDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textDescription"
         android:layout_alignLeft="@+id/textCount"
         android:layout_alignRight="@+id/textCount"
+        android:layout_below="@id/textCount"
         android:layout_toLeftOf="@+id/textDescription"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/default_text_datetime"
@@ -81,8 +73,9 @@
         android:id="@+id/textCount"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textDateTime"
+        android:layout_alignBottom="@id/textDescription"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/textName"
         android:clickable="false"
         android:ems="1000"
         android:focusable="false"
@@ -91,5 +84,13 @@
         android:inputType="numberSigned"
         android:text="@string/default_text_count"
         android:textSize="@dimen/textSizeCounter" />
+
+    <Button
+        android:id="@+id/buttonUp"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/textCount"
+        android:layout_below="@+id/textDateTime"
+        android:text="@string/text_up_button" />
 
 </RelativeLayout>

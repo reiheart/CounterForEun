@@ -1,7 +1,5 @@
 package kr.dev.rei.counter4eun;
 
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -88,33 +86,10 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	private void initCountingData() {
 		int idNum = getIntent().getIntExtra(CountingActivity.paramKeyIdNum, 1);
 
-		UsefulTools tools = UsefulTools.GetInstance();
-		UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
-		SQLiteDatabase db = dbAdater.getReadableDatabase();
+		data = new CountingData();
+		data.setIdNum(idNum);
 
-		String name = "default";
-		String description = "";
-		String descriptionTime = "20130101000000";
-		int count = 0;
-		String countTime = "20130101000000";
-		int sortNum = 1;
-
-		String selectSQL = dbAdater.getSelectCounterDataSQL(idNum);
-		Cursor dbCursor = db.rawQuery(selectSQL, null);
-		if (dbCursor.moveToFirst())
-		{
-			idNum = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnIdNum));
-			name = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnName));
-			description = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescription));
-			descriptionTime = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescriptionDatetime));
-			count = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnCountNum));
-			countTime = dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnCountDatetime));
-			sortNum = dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnSortNum));
-		}
-		dbCursor.close();
-		dbAdater.close();
-
-		data = new CountingData(idNum, name, description, descriptionTime, count, countTime, sortNum);
+		data = selectCountingData(data);
 	}
 
 	@Override
@@ -127,7 +102,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		String descStr = textDescription.getText().toString();
 		data.setDescription(descStr);
 
-		String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+		String nowString =  tools.getDateTimeStringType02(null);
 		data.setDescriptionTime(nowString);
 
 		updateCountingData();
@@ -147,7 +122,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 			int countingValue = data.getCount();
 			textCount.setText(String.valueOf(++countingValue));
 
-			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			String nowString =  tools.getDateTimeStringType02(null);
 			try {
 				textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
 			} catch (Exception e) {
@@ -164,7 +139,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 			int countingValue = data.getCount();
 			textCount.setText(String.valueOf(--countingValue));
 
-			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			String nowString =  tools.getDateTimeStringType02(null);
 			try {
 				textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
 			} catch (Exception e) {
@@ -185,7 +160,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					textCount.setText("0");
-					String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+					String nowString =  tools.getDateTimeStringType02(null);
 					try {
 						textDateTime.setText(tools.getDateTimeStringType02ToType01(nowString));
 					} catch (Exception e) {
@@ -219,7 +194,7 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 					textDescription.setText("");
 					data.setDescription("");
 
-					String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+					String nowString =  tools.getDateTimeStringType02(null);
 					data.setDescriptionTime(nowString);
 
 					updateCountingData();
@@ -252,11 +227,34 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 			String descStr = textDescription.getText().toString();
 			data.setDescription(descStr);
 
-			String nowString =  tools.getDateTimeStringType02(Calendar.getInstance());
+			String nowString =  tools.getDateTimeStringType02(null);
 			data.setDescriptionTime(nowString);
 
 			updateCountingData();
 		}
+	}
+
+	private CountingData selectCountingData(CountingData countingData) {
+		UsefulTools tools = UsefulTools.GetInstance();
+		UsefulTools.DatabaseAdater dbAdater = tools.getDatabaseAdater(this, tools.getDBVersion(sharedPref));
+		SQLiteDatabase db = dbAdater.getReadableDatabase();
+
+		String selectSQL = dbAdater.getSelectCounterDataSQL(countingData.getIdNum());
+		Cursor dbCursor = db.rawQuery(selectSQL, null);
+		if (dbCursor.moveToFirst())
+		{
+			countingData.setIdNum(dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnIdNum)));
+			countingData.setName(dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnName)));
+			countingData.setDescription(dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescription)));
+			countingData.setDescriptionTime(dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnDescriptionDatetime)));
+			countingData.setCount(dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnCountNum)));
+			countingData.setCountTime(dbCursor.getString(dbCursor.getColumnIndex(dbAdater.columnCountDatetime)));
+			countingData.setSortNum(dbCursor.getInt(dbCursor.getColumnIndex(dbAdater.columnSortNum)));
+		}
+		dbCursor.close();
+		dbAdater.close();
+
+		return countingData;
 	}
 
 	private void updateCountingData() {

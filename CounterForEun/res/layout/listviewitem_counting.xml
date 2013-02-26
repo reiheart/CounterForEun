@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="63dp"
         android:layout_gravity="left|center_vertical"
         android:layout_marginLeft="18dp"
-        android:layout_weight="7"
+        android:layout_weight="10"
         android:ellipsize="marquee"
         android:gravity="left|center_vertical"
         android:text="Name"
-        android:textColor="@color/text_grey"
+        android:textColor="@color/white"
         android:textSize="@dimen/textSizeCountingListName" />
 
     <TextView
         android:id="@+id/txtDateTime"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="63dp"
         android:layout_gravity="right|center_vertical"
         android:layout_marginRight="9dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:ellipsize="marquee"
         android:gravity="right|center_vertical"
         android:text="date_time"
-        android:textColor="@color/text_grey"
+        android:textColor="@color/white"
         android:textSize="@dimen/textSizeCountingListSmall" />
+
+    <CheckBox
+        android:id="@+id/checkBoxWillRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:checked="false"
+        android:visibility="visible" />
     
 </LinearLayout>

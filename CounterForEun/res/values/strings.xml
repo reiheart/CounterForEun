@@ -19,4 +19,7 @@
     <string name="default_text_count">0</string>
     <string name="notice_start">손뜨개 도우미 시작중...</string>
     <string name="cont_desc_image">starting image</string>
+    <string name="text_add">+</string>
+    <string name="text_delete">-</string>
+    <string name="text_remove">삭제</string>
 </resources>

@@ -4,4 +4,6 @@
     <dimen name="textSizeCountingListName">27dp</dimen>
     <dimen name="textSizeCountingListEtc">18dp</dimen>
     <dimen name="textSizeCountingListSmall">9dp</dimen>
+    <dimen name="buttonSizeRemoveState">80dp</dimen>
+    <dimen name="buttonSizeNonRemoveState">45dp</dimen>
 </resources>
