@@ -20,5 +20,6 @@
     <color name="text_grey">#646464</color>
     <style name="theme_no_Title" parent="android:style/Theme.NoTitleBar"></style>
     <color name="color_half_tran_black">#52C8C8C8</color>
+    <color name="color_tran">#00000000</color>
 
 </resources>

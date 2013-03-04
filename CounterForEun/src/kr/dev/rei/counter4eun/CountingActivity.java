@@ -1,6 +1,7 @@
 package kr.dev.rei.counter4eun;
 
 import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,8 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,10 +25,10 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 
 	private EditText textName;
 
-	private Button buttonUp;
-	private Button buttonDown;
-	private Button buttonResetCount;
-	private Button buttonResetMemo;
+	private ImageButton buttonUp;
+	private ImageButton buttonDown;
+	private ImageButton buttonResetCount;
+	private ImageButton buttonResetMemo;
 
 	private EditText textCount;
 	private EditText textDescription;
@@ -48,10 +49,10 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		textCount = (EditText) findViewById(R.id.textCount);
 		textDescription = (EditText) findViewById(R.id.textDescription);
 		textDateTime = (TextView) findViewById(R.id.textDateTime);
-		buttonUp = (Button) findViewById(R.id.buttonUp);
-		buttonDown = (Button) findViewById(R.id.buttonDown);
-		buttonResetCount = (Button) findViewById(R.id.buttonResetCount);
-		buttonResetMemo = (Button) findViewById(R.id.buttonResetMemo);
+		buttonUp = (ImageButton) findViewById(R.id.buttonUp);
+		buttonDown = (ImageButton) findViewById(R.id.buttonDown);
+		buttonResetCount = (ImageButton) findViewById(R.id.buttonResetCount);
+		buttonResetMemo = (ImageButton) findViewById(R.id.buttonResetMemo);
 
 		layoutMain.setOnClickListener(this);
 		textName.setOnFocusChangeListener(this);

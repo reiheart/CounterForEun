@@ -3,46 +3,30 @@
     android:id="@+id/layoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_witch"
+    android:background="@drawable/bg_counting_main"
     tools:context=".MainActivity" >
 
-   <EditText
-        android:id="@+id/textDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="130dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/textName"
-        android:layout_toRightOf="@+id/textCount"
-        android:ems="10"
-        android:gravity="top|left"
-        android:hint="@string/hint_description"
-        android:inputType="textMultiLine" />
-
-    <Button
-        android:id="@+id/buttonResetCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/text_reset_count_button" />
-
-    <Button
+    <ImageButton
         android:id="@+id/buttonResetMemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/buttonResetCount"
-        android:text="@string/text_reset_desc_button" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_tran"
+        android:src="@drawable/bg_btn_reset_memo"
+        android:text="@string/text_reset_desc_button"
+        tools:ignore="ContentDescription" />
 
-    <Button
-        android:id="@+id/buttonDown"
-        android:layout_width="60dp"
+    <ImageButton
+        android:id="@+id/buttonResetCount"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/buttonUp"
-        android:layout_alignRight="@+id/textCount"
-        android:layout_alignTop="@+id/buttonUp"
-        android:text="@string/text_down_button" />
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/buttonResetMemo"
+        android:background="@color/color_tran"
+        android:src="@drawable/bg_btn_reset_count"
+        android:text="@string/text_reset_count_button"
+        tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/textName"
@@ -50,47 +34,89 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/textDescription"
-        android:background="@color/color_half_tran_black"
+        android:layout_toLeftOf="@+id/buttonResetCount"
+        android:background="@drawable/bg_txt_title"
+        android:ems="10"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="@color/text_grey"
-        android:text="@string/default_text_name"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:text="@string/default_text_name" />
 
-    <TextView
-        android:id="@+id/textDateTime"
+    <ImageView
+        android:id="@+id/imageViewBonus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textCount"
-        android:layout_alignRight="@+id/textCount"
-        android:layout_below="@id/textCount"
-        android:layout_toLeftOf="@+id/textDescription"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/default_text_datetime"
-        android:textColor="@color/text_grey" />
+        android:layout_above="@+id/textDescription"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/bonus_picture"
+        tools:ignore="ContentDescription" />
 
     <EditText
-        android:id="@+id/textCount"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/textDescription"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textName"
-        android:clickable="false"
-        android:ems="1000"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:gravity="center_vertical|center_horizontal"
-        android:inputType="numberSigned"
-        android:text="@string/default_text_count"
-        android:textSize="@dimen/textSizeCounter" />
+        android:id="@+id/textDescription"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/bg_memo_box"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="@string/hint_description"
+        android:inputType="textMultiLine"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp" >
+    </EditText>
 
-    <Button
-        android:id="@+id/buttonUp"
-        android:layout_width="60dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/textCount"
-        android:layout_below="@+id/textDateTime"
-        android:text="@string/text_up_button" />
+        android:layout_marginTop="50dp"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/buttonUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@color/color_tran"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_btn_up"
+            android:text="@string/text_up_button"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/default_text_datetime"
+            android:textColor="@color/text_grey" />
+
+        <EditText
+            android:id="@+id/textCount"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_count"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center_vertical|center_horizontal"
+            android:inputType="numberSigned"
+            android:text="@string/default_text_count"
+            android:textSize="@dimen/textSizeCounter" />
+
+        <ImageButton
+            android:id="@+id/buttonDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@color/color_tran"
+            android:scaleType="centerInside"
+            android:src="@drawable/bg_btn_down"
+            android:text="@string/text_down_button"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
 
 </RelativeLayout>
