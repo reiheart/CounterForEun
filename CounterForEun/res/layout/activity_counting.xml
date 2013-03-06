@@ -96,7 +96,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
+<<<<<<< HEAD
+            android:gravity="right|center_vertical"
+=======
             android:gravity="center_vertical|center_horizontal"
+>>>>>>> 7e89d9bd7f01863138259c89576dc38d305bdebb
             android:text="@string/default_text_datetime"
             android:textColor="@color/text_grey"
             android:textSize="@dimen/textSizeCounterDateTime" />
