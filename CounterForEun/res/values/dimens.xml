@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="textSizeCounter">40dp</dimen>
+    <dimen name="textSizeCounter">60dp</dimen>
+    <dimen name="textSizeCounterTitle">14dp</dimen>
+    <dimen name="textSizeCounterDateTime">12dp</dimen>
     <dimen name="textSizeCountingListName">27dp</dimen>
     <dimen name="textSizeCountingListEtc">18dp</dimen>
     <dimen name="textSizeCountingListSmall">9dp</dimen>

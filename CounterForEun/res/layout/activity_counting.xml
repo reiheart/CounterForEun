@@ -6,50 +6,63 @@
     android:background="@drawable/bg_counting_main"
     tools:context=".MainActivity" >
 
+    <ImageView
+        android:id="@+id/imageViewBonus"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textDescription"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-25dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:src="@drawable/bonus_picture"
+        tools:ignore="ContentDescription" />
+
     <ImageButton
         android:id="@+id/buttonResetMemo"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/buttonResetCount"
+        android:adjustViewBounds="true"
         android:background="@color/color_tran"
+        android:scaleType="centerInside"
         android:src="@drawable/bg_btn_reset_memo"
         android:text="@string/text_reset_desc_button"
         tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/buttonResetCount"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/buttonResetMemo"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="true"
         android:background="@color/color_tran"
+        android:scaleType="centerInside"
         android:src="@drawable/bg_btn_reset_count"
         android:text="@string/text_reset_count_button"
         tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/textName"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="170dp"
+        android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/buttonResetCount"
         android:background="@drawable/bg_txt_title"
-        android:ems="10"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="textMultiLine"
-        android:text="@string/default_text_name" />
-
-    <ImageView
-        android:id="@+id/imageViewBonus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textDescription"
-        android:layout_alignParentRight="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/bonus_picture"
-        tools:ignore="ContentDescription" />
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingBottom="20dp"
+        android:text="@string/default_text_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeCounterTitle" />
 
     <EditText
         android:id="@+id/textDescription"
@@ -57,6 +70,8 @@
         android:layout_height="130dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/bg_memo_box"
         android:ems="10"
         android:gravity="top|left"
@@ -69,15 +84,28 @@
     </EditText>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_above="@id/textDescription"
+        android:layout_below="@id/textName"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/default_text_datetime"
+            android:textColor="@color/text_grey"
+            android:textSize="@dimen/textSizeCounterDateTime" />
 
         <ImageButton
             android:id="@+id/buttonUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:adjustViewBounds="true"
             android:background="@color/color_tran"
             android:scaleType="centerInside"
@@ -86,17 +114,10 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textDateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/default_text_datetime"
-            android:textColor="@color/text_grey" />
-
-        <EditText
             android:id="@+id/textCount"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/bg_count"
             android:clickable="false"
             android:focusable="false"
@@ -104,19 +125,20 @@
             android:gravity="center_vertical|center_horizontal"
             android:inputType="numberSigned"
             android:text="@string/default_text_count"
+            android:textColor="@color/black"
             android:textSize="@dimen/textSizeCounter" />
 
         <ImageButton
             android:id="@+id/buttonDown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:adjustViewBounds="true"
             android:background="@color/color_tran"
             android:scaleType="centerInside"
             android:src="@drawable/bg_btn_down"
             android:text="@string/text_down_button"
             tools:ignore="ContentDescription" />
-
     </LinearLayout>
 
 </RelativeLayout>

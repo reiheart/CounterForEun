@@ -1,7 +1,6 @@
 package kr.dev.rei.counter4eun;
 
 import android.app.Activity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,15 +23,15 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 	private RelativeLayout layoutMain;
 
 	private EditText textName;
+	private EditText textDescription;
+
+	private TextView textCount;
+	private TextView textDateTime;
 
 	private ImageButton buttonUp;
 	private ImageButton buttonDown;
 	private ImageButton buttonResetCount;
 	private ImageButton buttonResetMemo;
-
-	private EditText textCount;
-	private EditText textDescription;
-	private TextView textDateTime;
 
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
@@ -44,10 +43,10 @@ public class CountingActivity extends Activity implements OnClickListener, OnFoc
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_counting);
 
-		textName = (EditText) findViewById(R.id.textName);
 		layoutMain = (RelativeLayout) findViewById(R.id.layoutMain);
-		textCount = (EditText) findViewById(R.id.textCount);
+		textName = (EditText) findViewById(R.id.textName);
 		textDescription = (EditText) findViewById(R.id.textDescription);
+		textCount = (TextView) findViewById(R.id.textCount);
 		textDateTime = (TextView) findViewById(R.id.textDateTime);
 		buttonUp = (ImageButton) findViewById(R.id.buttonUp);
 		buttonDown = (ImageButton) findViewById(R.id.buttonDown);

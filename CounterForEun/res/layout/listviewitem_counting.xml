@@ -14,6 +14,7 @@
         android:layout_weight="10"
         android:ellipsize="marquee"
         android:gravity="left|center_vertical"
+        android:lines="1"
         android:text="@string/default_text_name"
         android:textColor="@color/white"
         android:textSize="@dimen/textSizeCountingListName" />
@@ -27,6 +28,7 @@
         android:layout_weight="3"
         android:ellipsize="marquee"
         android:gravity="right|center_vertical"
+        android:lines="1"
         android:text="@string/default_text_datetime"
         android:textColor="@color/white"
         android:textSize="@dimen/textSizeCountingListSmall" />
