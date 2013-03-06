@@ -58,8 +58,10 @@
         android:gravity="center_vertical|center_horizontal"
         android:inputType="textMultiLine"
         android:lines="1"
+        android:maxLength="16"
         android:maxLines="1"
         android:paddingBottom="20dp"
+        android:paddingLeft="30dp"
         android:text="@string/default_text_name"
         android:textColor="@color/black"
         android:textSize="@dimen/textSizeCounterTitle" />
@@ -67,9 +69,9 @@
     <EditText
         android:id="@+id/textDescription"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/bg_memo_box"
@@ -81,11 +83,12 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="20dp" >
+
     </EditText>
 
     <LinearLayout
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="145dp"
         android:layout_above="@id/textDescription"
         android:layout_below="@id/textName"
         android:layout_marginLeft="10dp"
@@ -96,11 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
-<<<<<<< HEAD
             android:gravity="right|center_vertical"
-=======
-            android:gravity="center_vertical|center_horizontal"
->>>>>>> 7e89d9bd7f01863138259c89576dc38d305bdebb
             android:text="@string/default_text_datetime"
             android:textColor="@color/text_grey"
             android:textSize="@dimen/textSizeCounterDateTime" />
@@ -110,6 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="5dp"
             android:adjustViewBounds="true"
             android:background="@color/color_tran"
             android:scaleType="centerInside"
@@ -120,14 +120,13 @@
         <TextView
             android:id="@+id/textCount"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="140dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/bg_count"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
-            android:inputType="numberSigned"
             android:text="@string/default_text_count"
             android:textColor="@color/black"
             android:textSize="@dimen/textSizeCounter" />
@@ -137,12 +136,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="5dp"
             android:adjustViewBounds="true"
             android:background="@color/color_tran"
             android:scaleType="centerInside"
             android:src="@drawable/bg_btn_down"
             android:text="@string/text_down_button"
             tools:ignore="ContentDescription" />
+
     </LinearLayout>
 
 </RelativeLayout>

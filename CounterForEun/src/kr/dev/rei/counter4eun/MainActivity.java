@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -292,13 +293,11 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 				getCountingData();
 			}
 
-			buttonAdd.setText(R.string.text_add);
-			buttonRemove.setText(R.string.text_delete);
-			buttonAdd.setWidth(getResources().getDimensionPixelSize(R.dimen.buttonSizeNonRemoveState));
-			buttonRemove.setWidth(getResources().getDimensionPixelSize(R.dimen.buttonSizeNonRemoveState));
 			listAdapterCounting.notifyDataSetChanged();
 
 			removeState = false;
+			buttonAdd.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_btn_add));
+			buttonRemove.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_btn_del));
 		}
 		else
 		{
@@ -314,10 +313,6 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 			}
 			else if (v.equals(buttonRemove))
 			{
-				buttonAdd.setText(R.string.cancel);
-				buttonRemove.setText(R.string.text_remove);
-				buttonAdd.setWidth(getResources().getDimensionPixelSize(R.dimen.buttonSizeRemoveState));
-				buttonRemove.setWidth(getResources().getDimensionPixelSize(R.dimen.buttonSizeRemoveState));
 				listAdapterCounting.notifyDataSetChanged();
 
 				if (willRemoveCountingData == null)
@@ -327,6 +322,8 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 				willRemoveCountingData.clear();
 
 				removeState = true;
+				buttonAdd.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_btn_cancel));
+				buttonRemove.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_btn_del_ch));
 			}
 		}
 	}
