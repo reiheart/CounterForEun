@@ -6,15 +6,12 @@ import java.util.Iterator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +23,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements Runnable, AdapterView.OnItemClickListener, View.OnClickListener{
-	private RelativeLayout layoutMain;
-	private RelativeLayout layoutTitle;
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener{
 	private LinearLayout layoutSubMain;
 	private LinearLayout layoutButtons;
 	private ListView listCounting;
@@ -44,9 +38,6 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 
-	private TitleHandler titleHandler;
-	private boolean titleShown;
-
 	private boolean removeState;
 	private ArrayList<Integer> willRemoveCountingData;
 
@@ -56,8 +47,6 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 
 		setContentView(R.layout.activity_main);
 
-		layoutMain = (RelativeLayout) findViewById(R.id.layoutMain);
-		layoutTitle = (RelativeLayout) findViewById(R.id.layoutTitle);
 		layoutSubMain = (LinearLayout) findViewById(R.id.layoutSubMain);
 		layoutButtons = (LinearLayout) findViewById(R.id.layoutButtons);
 		listCounting = (ListView) findViewById(R.id.listCounting);
@@ -76,33 +65,6 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		buttonAdd.setOnClickListener(this);
 		buttonRemove.setOnClickListener(this);
 
-		titleShown = false;
-		titleHandler = new TitleHandler();
-		Thread finishThread = new Thread(this);
-		finishThread.start();
-	}
-
-	@Override
-	public void run() {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		titleHandler.sendMessage(new Message());
-		titleShown = true;
-	}
-
-	@SuppressLint("HandlerLeak")
-	private class TitleHandler extends Handler {
-		@Override
-		public void handleMessage(Message msg) {
-			layoutSubMain.setVisibility(View.VISIBLE);
-			layoutTitle.setVisibility(View.INVISIBLE);
-
-			super.handleMessage(msg);
-		}
 	}
 
 	@Override
@@ -110,17 +72,6 @@ public class MainActivity extends Activity implements Runnable, AdapterView.OnIt
 		super.onResume();
 
 		this.getCountingData();
-
-		if (titleShown)
-		{
-			layoutSubMain.setVisibility(View.VISIBLE);
-			layoutTitle.setVisibility(View.INVISIBLE);
-		}
-		else
-		{
-			layoutSubMain.setVisibility(View.INVISIBLE);
-			layoutTitle.setVisibility(View.VISIBLE);
-		}
 	}
 
 	private void initCountingList() {

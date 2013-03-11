@@ -125,7 +125,6 @@
             android:background="@drawable/bg_count"
             android:clickable="false"
             android:focusable="false"
-            android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/default_text_count"
             android:textColor="@color/black"
